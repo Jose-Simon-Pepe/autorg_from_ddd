@@ -1,5 +1,6 @@
 import os
 import pytest
+import datetime
 from click.testing import CliRunner
 from autorg.infrastructure.adapters.cli import add_command, ls_command
 
@@ -50,6 +51,14 @@ class TestCli:
         self.runner.invoke(add_command, ["input"])
         sut = self.runner.invoke(ls_command)
         assert sut.output == "input\n"
+
+    def test_list_inputs_with_d_argument_should_show_each_input_creation_date(self):
+        self.runner.invoke(add_command, ["input"])
+        sut = self.runner.invoke(ls_command,"-d")
+        now = str(datetime.datetime.now())[0:9]
+        assert sut.output.startswith(now)
+
+
 
 
 

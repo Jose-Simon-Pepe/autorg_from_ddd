@@ -1,4 +1,5 @@
 import click
+import datetime
 import sys
 from autorg.application.dtos.input_dto import InputDto 
 
@@ -26,12 +27,19 @@ def add_command(input_: str):
         click.echo(click.style(f"Failed adding input, {err}", fg="red"), file=sys.stderr)
 
 @inbox.command(name="ls", help="show all inputs in the inbox")
-def ls_command():
+@click.option("--date","-d",is_flag=True,default=False,help="show all inputs date creation")
+def ls_command(date):
     app = AppInput(CsvRepository())
-    inputs: list[str] = [inp.content for inp in app.list_inputs()]
+    inputs: list[str] = [inp for inp in app.list_inputs()]
 
     if len(inputs) == 0:
         click.echo("Not inputs found")
+
     else:
-        for item in inputs:
-            print(item)
+
+        if not date:
+            for item in inputs:
+                click.echo(item.content)
+        if date:
+            for item in inputs:
+                click.echo(str(item.creation_date)+" "+item.content)
