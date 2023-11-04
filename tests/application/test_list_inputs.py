@@ -18,10 +18,3 @@ class TestListInputs:
 
     
 
-#    @pytest.mark.integration
-#    def test_list_inputs_should_be_filtered_by_day(self):
-##        repo = InMemoryRepository()
-#        app = AppInput(repo)
-#        app.list_inputs_from("10/10/2023")
-#        assert []
-
