@@ -7,7 +7,7 @@ from autorg.infrastructure.adapters.cli import add_command, ls_command
 # TEST: debo verificar que el input ingresado haya quedado persistido
 # TEST: verificar que los inputs puedan filtrarse por hora/fecha
 # TEST: el comando inbox debe contener todo lo relativo a la bandeja de entrada (listar, agregar etc)
-
+#TODO: Deberia mejorarse la logica de las opciones flag como d, el codigo queda poco claro si no
 
 # TODO: APP adapter should recieve a instance of desired repo, no just use csv repo!
 
@@ -46,17 +46,26 @@ class TestCli:
         assert sut.output == "Not inputs found\n"
         assert sut.exit_code == 0
 
+    @pytest.mark.integration
     def test_dont_should_accept_duplicate_inputs(self):
         self.runner.invoke(add_command, ["input"])
         self.runner.invoke(add_command, ["input"])
         sut = self.runner.invoke(ls_command)
         assert sut.output == "input\n"
 
+    @pytest.mark.integration
     def test_list_inputs_with_d_argument_should_show_each_input_creation_date(self):
         self.runner.invoke(add_command, ["input"])
         sut = self.runner.invoke(ls_command,"-d")
         now = str(datetime.datetime.now())[0:9]
         assert sut.output.startswith(now)
+    
+    @pytest.mark.integration
+    def test_list_inputs_with_fd_option_and_day_should_show_a_filtered_by_day_existing_input_list(self):
+        self.runner.invoke(add_command, ["input"])
+        sut = self.runner.invoke(ls_command,"-d")
+
+
 
 
 
