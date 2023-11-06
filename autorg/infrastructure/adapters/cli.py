@@ -1,4 +1,5 @@
 import click
+from config.config import Config
 import datetime
 import sys
 from autorg.application.dtos.input_dto import InputDto 
@@ -8,6 +9,10 @@ from autorg.infrastructure.adapters.csvrepository import CsvRepository
 
 
 class Cli:
+
+    def __init__(self,config=Config):
+        """En caso de no proveer una configuracion nueva, se usara por defecto la del proyecto"""
+        self._config = config
 
     @click.group
     def autorg():

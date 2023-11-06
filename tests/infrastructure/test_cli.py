@@ -1,4 +1,5 @@
 import os
+from config.config import Config
 import pytest
 import datetime
 from click.testing import CliRunner
@@ -62,11 +63,18 @@ class TestCli:
         sut = self.runner.invoke(self.cli.ls_command,"-d")
         now = str(datetime.datetime.now())[0:9]
         assert sut.output.startswith(now)
+
+
+    def test_cli_should_be_created_with_a_config_module(self):
+        assert Cli(Config()) is not None
+
     
     @pytest.mark.integration
     def test_list_inputs_with_fd_option_and_day_should_show_a_filtered_by_day_existing_input_list(self):
         self.runner.invoke(self.cli.add_command, ["input"])
         sut = self.runner.invoke(self.cli.ls_command,"-d")
+
+
 
 
     
