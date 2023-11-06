@@ -1,6 +1,7 @@
 # cargar el fichero de configuracion config.toml
 # la configuracion debe ser dividida entre secciones toml
 # cada seccion debe retornar un diccionario
+# ¿Es buena idea que la config centralizada dependa tanto de rutas relativas?
 
 import pytest
 from config.config import Config
@@ -24,4 +25,11 @@ def test_config_get_storage_should_fail_if_key_not_exists():
     config = Config()
     with pytest.raises(KeyError):
         config.storage("non-existent key")
+
+
+@pytest.mark.integration
+def test_config_should_use_a_optional_path():
+    config = Config("tests/helpers/config.toml")
+    assert config.storage("csv")["filepath"] == "testsdata.csv"
+
 

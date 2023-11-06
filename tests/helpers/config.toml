@@ -1,0 +1,6 @@
+[project]
+name="autorg"
+version="0.1.0"
+
+[storage.csv]
+filepath="testsdata.csv"
