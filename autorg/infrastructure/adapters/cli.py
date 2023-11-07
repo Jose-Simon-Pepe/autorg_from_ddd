@@ -12,7 +12,7 @@ class Cli:
 
     def __init__(self,config=Config):
         """En caso de no proveer una configuracion nueva, se usara por defecto la del proyecto"""
-        self._config = config
+#        self._config = config
 
     @click.group
     def autorg():
