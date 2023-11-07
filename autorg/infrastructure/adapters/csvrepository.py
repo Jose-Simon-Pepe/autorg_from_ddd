@@ -6,8 +6,9 @@ from autorg.domain.entities.input import Input
 
 
 class CsvRepository(Repository):
-    def __init__(self):
-        self._repo_path = "data.csv"
+    def __init__(self,path:str ="data.csv"):
+        """En caso de no especificarse un path, se usara el repo general"""
+        self._repo_path = path
         self.rows = []
 
     def _file_exists(self):
@@ -16,7 +17,7 @@ class CsvRepository(Repository):
     def store(self, inp: Input) -> None:
         row = [str(inp.id()), inp.value().get("creation_date"), inp.value().get("content")]
 
-        mode = "a" if os.path.exists("data.csv") else "w"
+        mode = "a" if os.path.exists(self._repo_path) else "w"
         with open(self._repo_path, mode, newline="") as file:
             writer = csv.writer(file)
             writer.writerow(row)
