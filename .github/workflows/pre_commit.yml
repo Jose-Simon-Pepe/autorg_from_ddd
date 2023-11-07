@@ -7,8 +7,8 @@ on:
             - 'build/**'
             - 'infra/**'
             - '.gitignore'
-            - 'README.md
-            
+            - 'README.md'
+
 jobs:
   test:
     runs-on: ubuntu-latest
