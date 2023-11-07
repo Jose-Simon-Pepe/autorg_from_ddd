@@ -9,10 +9,11 @@ from autorg.infrastructure.adapters.csvrepository import CsvRepository
 
 
 class Cli:
+    
 
     def __init__(self,config=Config):
         """En caso de no proveer una configuracion nueva, se usara por defecto la del proyecto"""
-#        self._config = config
+        config = config
 
     @click.group
     def autorg():
@@ -27,7 +28,8 @@ class Cli:
     @click.argument("input_")
     def add_command(input_: str):
         try:
-            app = AppInput(CsvRepository())
+            repo = CsvRepository(Config().storage("csv")["filepath"])
+            app = AppInput(repo)
             app.add_input(input_)
             click.echo("The input was saved correctly", color=True)
         except Exception as err:
@@ -36,7 +38,8 @@ class Cli:
     @inbox.command(name="ls", help="show all inputs in the inbox")
     @click.option("--date","-d",is_flag=True,default=False,help="show all inputs date creation")
     def ls_command(date):
-        app = AppInput(CsvRepository())
+        repo = CsvRepository(Config().storage("csv")["filepath"])
+        app = AppInput(repo)
         inputs: list[str] = [inp for inp in app.list_inputs()]
     
         if len(inputs) == 0:
