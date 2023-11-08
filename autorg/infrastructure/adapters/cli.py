@@ -1,5 +1,6 @@
 import click
 from config.config import Config
+from autorg.domain.protocols.repository import Repository
 import datetime
 import sys
 from autorg.application.dtos.input_dto import InputDto 
@@ -11,9 +12,22 @@ from autorg.infrastructure.adapters.csvrepository import CsvRepository
 class Cli:
     
 
-    def __init__(self,config=Config):
+    def __init__(self,config=Config()):
         """En caso de no proveer una configuracion nueva, se usara por defecto la del proyecto"""
-        config = config
+        self._config = config
+        self.read_config()
+
+
+    def read_config(self):
+        try:
+            if self._config.storage("csv")["filepath"]:
+                self._repo = CsvRepository(self._config.storage("csv")["filepath"])
+
+        except Exception as e:
+            raise e
+
+    def repo(self) -> Repository:
+        return self._repo
 
     @click.group
     def autorg():

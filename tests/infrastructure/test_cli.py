@@ -4,7 +4,7 @@ import pytest
 import datetime
 from click.testing import CliRunner
 from autorg.infrastructure.adapters.cli import Cli 
-#add_command, ls_command
+from autorg.infrastructure.adapters.csvrepository import CsvRepository
 
 # TEST: debo verificar que el input ingresado haya quedado persistido
 # TEST: verificar que los inputs puedan filtrarse por hora/fecha
@@ -12,6 +12,15 @@ from autorg.infrastructure.adapters.cli import Cli
 #TODO: Deberia mejorarse la logica de las opciones flag como d, el codigo queda poco claro si no
 
 # TODO: APP adapter should recieve a instance of desired repo, no just use csv repo!
+
+@pytest.fixture(autouse=True)
+def run_around_tests():
+    """This foreach is being used because of the mdfaking garbage collector being doom"""
+    if len(Config._instances.values()) >0:
+        Config._instances.clear()
+    yield
+    Config._instances.clear()
+
 
 class TestCli:
 
@@ -67,6 +76,16 @@ class TestCli:
 
     def test_cli_should_be_created_with_a_config_module(self):
         assert Cli(Config()) is not None
+
+        #TODO: Hacer que tambien se verifique, segun config, que tipo de persistencia usar
+    def test_cli_should_use_config_module_for_configure_repo_storage_path(self):
+        sut= Cli(Config("tests/helpers/config.toml")) 
+        assert type(sut.repo()) is CsvRepository
+        assert sut.repo()._repo_path == "testsdata.csv"
+
+
+
+
 
     
     @pytest.mark.integration

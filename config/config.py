@@ -14,6 +14,7 @@ class Config(metaclass=Single):
         try:
             with open(self._path, "rb") as f:
                 data = tomllib.load(f)
+
                 self.config = data
             
         except FileNotFoundError as err:
