@@ -4,7 +4,16 @@
 # ¿Es buena idea que la config centralizada dependa tanto de rutas relativas?
 
 import pytest
-from config.config import Config
+from config.config import Config,DuplicatedConfigError
+
+@pytest.fixture(autouse=True)
+def run_around_tests():
+    if len(Config._instances.values()) >0:
+        Config._instances.clear()
+    yield
+    Config._instances.clear()
+
+
 
 
 @pytest.mark.integration
@@ -31,5 +40,15 @@ def test_config_get_storage_should_fail_if_key_not_exists():
 def test_config_should_use_a_optional_path():
     config = Config("tests/helpers/config.toml")
     assert config.storage("csv")["filepath"] == "testsdata.csv"
+
+
+
+@pytest.mark.integration
+def test_config_should_be_only_able_to_be_instanciated_one_time():
+    config = Config("tests/helpers/config.toml")
+    ey = Config("tests/helpers/coasnfig.toml")
+    assert ey == config
+    
+
 
 

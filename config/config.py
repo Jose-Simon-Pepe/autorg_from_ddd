@@ -1,10 +1,14 @@
 import tomllib
+from metaclasses.single import Single
 
-class Config():
+class Config(metaclass=Single):
+
+
     def __init__(self,path:str="config.toml") -> None:
         self._path = path
         self._read_file()
         self.project: dict = {}
+
 
     def _read_file(self):
         try:
@@ -21,3 +25,8 @@ class Config():
     def load_project_metadata(self):
         self.project["name"] = self.config.get("project")["name"]
         self.project["version"] = self.config.get("project")["version"]
+
+
+class DuplicatedConfigError(BaseException):
+    pass
+
