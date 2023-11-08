@@ -8,6 +8,7 @@ from config.config import Config,DuplicatedConfigError
 
 @pytest.fixture(autouse=True)
 def run_around_tests():
+    """This foreach is being used because of the mdfaking garbage collector being doom"""
     if len(Config._instances.values()) >0:
         Config._instances.clear()
     yield
