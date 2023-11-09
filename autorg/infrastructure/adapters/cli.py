@@ -50,8 +50,8 @@ class Cli:
             click.echo(click.style(f"Failed adding input, {err}", fg="red"), file=sys.stderr)
     
     @inbox.command(name="ls", help="show all inputs in the inbox")
-    @click.option("--date","-d",is_flag=True,default=False,help="show all inputs date creation")
-    def ls_command(date):
+    @click.option("--datenum","-dn",is_flag=True,default=False,help="show all inputs date creation in a numeric way")
+    def ls_command(datenum):
         repo = CsvRepository(Config().storage("csv")["filepath"])
         app = AppInput(repo)
         inputs: list[str] = [inp for inp in app.list_inputs()]
@@ -61,9 +61,9 @@ class Cli:
     
         else:
     
-            if not date:
+            if not datenum:
                 for item in inputs:
                     click.echo(item.content)
-            if date:
+            if datenum:
                 for item in inputs:
                     click.echo(str(item.creation_date)+" "+item.content)

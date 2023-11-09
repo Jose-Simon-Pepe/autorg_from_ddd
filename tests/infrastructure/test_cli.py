@@ -69,7 +69,7 @@ class TestCli:
     @pytest.mark.integration
     def test_list_inputs_with_d_argument_should_show_each_input_creation_date(self):
         self.runner.invoke(self.cli.add_command, ["input"])
-        sut = self.runner.invoke(self.cli.ls_command,"-d")
+        sut = self.runner.invoke(self.cli.ls_command,"-dn")
         now = str(datetime.datetime.now())[0:9]
         assert sut.output.startswith(now)
 
@@ -84,14 +84,14 @@ class TestCli:
         assert sut.repo()._repo_path == "testsdata.csv"
 
 
+#    @pytest.mark.integration
+#    def test_list_inputs_with_fd_option_and_day_should_show_a_filtered_by_day_existing_input_list(self):
+#        self.runner.invoke(self.cli.add_command, ["input"])
+#        old date = 
+#        sut = self.runner.invoke(self.cli.ls_command,"-d")
+#        assert sut.output.startswith()
 
 
-
-    
-    @pytest.mark.integration
-    def test_list_inputs_with_fd_option_and_day_should_show_a_filtered_by_day_existing_input_list(self):
-        self.runner.invoke(self.cli.add_command, ["input"])
-        sut = self.runner.invoke(self.cli.ls_command,"-d")
 
 
 
