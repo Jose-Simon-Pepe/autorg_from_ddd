@@ -1,7 +1,7 @@
 import click
 from config.config import Config
 from autorg.domain.protocols.repository import Repository
-import datetime
+from datetime import datetime
 import sys
 from autorg.application.dtos.input_dto import InputDto 
 
@@ -24,8 +24,8 @@ class Cli:
                 self._repo = CsvRepository(self._config.storage("csv")["filepath"])
 
         except Exception as e:
-            raise e
-
+            raise e 
+    
     def repo(self) -> Repository:
         return self._repo
 
@@ -51,7 +51,8 @@ class Cli:
     
     @inbox.command(name="ls", help="show all inputs in the inbox")
     @click.option("--datenum","-dn",is_flag=True,default=False,help="show all inputs date creation in a numeric way")
-    def ls_command(datenum):
+    @click.option("-d","day",help="Show inputs created on desired day",required=False, type=str)
+    def ls_command(datenum,day):
         repo = CsvRepository(Config().storage("csv")["filepath"])
         app = AppInput(repo)
         inputs: list[str] = [inp for inp in app.list_inputs()]
@@ -60,10 +61,24 @@ class Cli:
             click.echo("Not inputs found")
     
         else:
-    
-            if not datenum:
+
+            if day:
+
+                right_inp = list()
+
+                for inp in inputs:
+                    if datetime.strptime(str(inp.creation_date),"%Y-%m-%d %H:%M:%S.%f").strftime("%a %d %b %Y")==day:
+                        right_inp.append(inp)
+
+                for right in right_inp:
+                    click.echo(datetime.strptime(str(right.creation_date),"%Y-%m-%d %H:%M:%S.%f").strftime("%a %d %b %Y")+" "+right.content) 
+
+
+            elif not datenum:
                 for item in inputs:
                     click.echo(item.content)
-            if datenum:
+
+            elif datenum:
                 for item in inputs:
                     click.echo(str(item.creation_date)+" "+item.content)
+
