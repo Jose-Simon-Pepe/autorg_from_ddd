@@ -14,14 +14,13 @@ class Cli:
 
     def __init__(self,config=Config()):
         """En caso de no proveer una configuracion nueva, se usara por defecto la del proyecto"""
-        self._config = config
-        self.read_config()
+        self._read_config(config)
 
 
-    def read_config(self):
+    def _read_config(self,config:Config):
         try:
-            if self._config.storage("csv")["filepath"]:
-                self._repo = CsvRepository(self._config.storage("csv")["filepath"])
+            if config.storage("csv")["filepath"]:
+                self._repo = CsvRepository(config.storage("csv")["filepath"])
 
         except Exception as e:
             raise e 
