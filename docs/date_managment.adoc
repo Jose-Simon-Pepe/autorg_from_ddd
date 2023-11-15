@@ -1,0 +1,73 @@
+= Date managment (es)
+Jose Pepe <jose.s.contacto@gmail.com>
+v0.1, 11/15/2023
+
+Para facilitar el uso del sistema al usuario, la fecha deberia serle mostrada y pedida en un formato sencillo de leer.
+Aqui estan 4 formatos pensados para facilitar el uso del sistema.
+
+== Feature 3: Filtrar inputs a listar segun fecha exacta (Dia, o Semana)
+
+El usuario ingresa una fecha al sistema, y este le devuelve los inputs ingresados en esa fecha puntual.
+
+=== Caso 1: Dia verboso
+
+[Format Example]
+====
+
+<Day> <Number> <Month Word> <Year>
+
+> Fri 20 Jan 2023
+
+(Implemented example in commit #998d9d6)
+
+====
+
+No es tan rapido de escribir si se busca un uso veloz de la aplicacion. A su vez, permite una buena exactitud, y es bastante simple implementarlo.
+
+=== Caso 2: Dia abreviado
+
+[Format Example]
+====
+
+<Number> <Month Word>
+
+> 20 Jan
+
+(Non implemented yet)
+
+====
+
+El formato mas rapido y efectivo que se me ocurre, ademas de ser facil de implementar.
+Hay un problema, que sin embargo no afectaria al individuo o particular en su uso, referido a que, al no ingresar el año, seria invalido para procesamiento de inputs antiguos.
+Tambien debe considerarse que el sistema esta diseñado para un procesamiento constante de inputs, el cual previene la acumulacion de estos; el caso problematico anterior mencionado es marginal.
+
+=== Caso 3: Semana absoluta (mediante numeros ordinales)
+
+====
+
+<Ordinal week> <Month Word>
+
+> Third Jan
+
+(Non implemented yet)
+
+====
+
+El formato es claro, pero dudo sobre la efectividad que tenga debido a que el usuario debe tener el interes de procesar inputs que esten dentro del numero de la semana exacta en la sucecion del mes.
+Por esto, prefiero quitarle prioridad en el desarrollo, y valorizar el filtro por semana relativa.
+
+=== Caso 4: Semana relativa (al dia actual)
+
+====
+
+last + <Cardinal week>
+
+> Last Three Weeks
+
+(Non implemented yet)
+
+====
+
+El formato es claro, quiza el "last" puede parecer verboso pero permite asociar al comando con la idea del caso de uso.
+
+En general, dado que se busca facilitar el uso, deberia aceptarse una entrada de fechas non case sensitive.
